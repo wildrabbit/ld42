@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="Project.xml" />
     <movie fps="60" />
-    <movie width="640" />
-    <movie height="480" />
+    <movie width="800" />
+    <movie height="600" />
     <movie version="1" />
     <movie minorVersion="0" />
     <movie platform="Lime" />
@@ -27,12 +27,12 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel=4.4.2&#xA;openfl=8.3.0&#xA;lime=6.4.0&#xA;hscript=2.2.0&#xA;tools=6.4.0&#xA;FLX_NO_DEBUG&#xA;no-compilation&#xA;NAPE_RELEASE_BUILD&#xA;openfl-flash&#xA;web&#xA;display" />
+    <option directives="flixel=4.4.2&#xA;openfl=8.3.0&#xA;lime=6.4.0&#xA;hscript=2.2.0&#xA;tools=6.4.0&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;display" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="--macro openfl._internal.utils.ExtraParams.include()&#xA;--macro lime.Lib.extraParams()&#xA;--macro flixel.system.macros.FlxDefines.run()&#xA;-swf-version 11.8" />
+    <option additional="--macro openfl._internal.utils.ExtraParams.include()&#xA;--macro lime.Lib.extraParams()&#xA;--macro flixel.system.macros.FlxDefines.run()&#xA;-swf-version 11.8&#xA;-debug " />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
