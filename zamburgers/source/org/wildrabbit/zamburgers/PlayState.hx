@@ -45,6 +45,11 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
+		
+#if !FLX_NO_MOUSE
+		FlxG.mouse.visible = false;
+#end
+		
 		bgColor = FlxColor.fromString("#03181c");
 		currentLevelIdx = 0;
 				

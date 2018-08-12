@@ -7,6 +7,8 @@ import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.system.FlxAssets.FlxSoundAsset;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSignal;
@@ -108,7 +110,15 @@ class Player extends FlxSprite
 		FlxG.watch.add(this, "exists");
 		
 		animation.finishCallback = onAnimFinished;
-
+		animation.callback = onAnimFrameChanged;
+	}
+	
+	function onAnimFrameChanged(name:String, frame:Int, idx:Int):Void
+	{
+		if (StringTools.startsWith(name, 'walk') && (frame % 2 == 1))
+		{
+			FlxG.sound.play(AssetPaths.Step__wav);
+		}
 	}
 	
 	function onAnimFinished(name:String):Void
@@ -134,25 +144,37 @@ class Player extends FlxSprite
 		updateFunction = updateFreeMovement;
 	}
 	
-	public function enterGrid(col:Int, row:Int, stepped:Bool = true):Void
+	function checkJump(deltaY:Int, deltaX:Int):Void
 	{
-		if (row > gridY)
+		if (deltaY > 0)
 		{
+			FlxG.sound.play(AssetPaths.Step__wav, 0.5);
+			FlxG.sound.play(AssetPaths.Jump__wav, 0.7);
 			animation.play('jump-front');
 		}
-		else if (row < gridY)
+		else if (deltaY < 0)
 		{
+			FlxG.sound.play(AssetPaths.Step__wav, 0.5);
+			FlxG.sound.play(AssetPaths.Jump__wav, 0.7);
 			animation.play('jump-back');
 		}
-		else if (col > gridX)
+		else if (deltaX > 0)
 		{
+			FlxG.sound.play(AssetPaths.Step__wav, 0.5);
+			FlxG.sound.play(AssetPaths.Jump__wav, 0.7);
 			animation.play('jump-right');
 		}
-		else if (col < gridX)
+		else if (deltaX < 0)
 		{
+			FlxG.sound.play(AssetPaths.Step__wav, 0.5);
+			FlxG.sound.play(AssetPaths.Jump__wav, 0.7);
 			animation.play('jump-left');
-		}
-		
+		}		
+	}
+	
+	public function enterGrid(col:Int, row:Int, stepped:Bool = true):Void
+	{
+		checkJump(row - gridY, col - gridX);
 		
 		setCoords(col, row);
 		
@@ -199,7 +221,7 @@ class Player extends FlxSprite
 	{
 		var dir:MoveDirection = move();
 		super.update(elapsed);
-	
+		
 		x = FlxMath.bound(x, referenceArea.x, referenceArea.x + referenceArea.width - width);
 		y = FlxMath.bound(y, referenceArea.y, referenceArea.y + referenceArea.height - height);
 		
@@ -282,22 +304,8 @@ class Player extends FlxSprite
 			var targetRow: Int = gridY + deltaRow;
 			if (grid.canBeStepped(targetCol, targetRow))
 			{
-				if (targetRow > gridY)
-				{
-					animation.play('jump-front');
-				}
-				else if (targetRow < gridY)
-				{
-					animation.play('jump-back');
-				}
-				else if (targetCol > gridX)
-				{
-					animation.play('jump-right');
-				}
-				else if (targetCol < gridX)
-				{
-					animation.play('jump-left');
-				}
+				checkJump(targetRow - gridY, targetCol - gridX);
+
 				setCoords(targetCol, targetRow);
 				grid.stepped(targetCol, targetRow);
 				
@@ -326,6 +334,8 @@ class Player extends FlxSprite
 	function fallSequence():Void
 	{
 		animation.play('fall');
+		FlxG.sound.list.forEach(function(s:FlxSound):Void { s.stop(); });
+		FlxG.sound.play(AssetPaths.Fall__wav, 0.7);
 		FlxTween.color(this, 0.8, FlxColor.WHITE, FlxColor.fromRGB(0,0,0,32), {onComplete: function(t:FlxTween) {playerDropped.dispatch(); }});
 		FlxTween.tween(this.scale, {x:0.2, y:0.2}, 0.5);
 		updateFunction = updateDeath;
@@ -334,6 +344,7 @@ class Player extends FlxSprite
 	function winSequence():Void
 	{
 		animation.play('win');
+		FlxG.sound.play(AssetPaths.Win2__wav, 1);
 		setPosition(goal.x + goal.width / 2, goal.y + goal.height / 2);
 		updateFunction = updateDeath;
 	}
@@ -390,19 +401,31 @@ class Player extends FlxSprite
 			{
 				case MoveDirection.North:
 				{
-					animation.play('walk-back');
+					if (animation.curAnim.name != 'walk-back')
+					{
+						animation.play('walk-back');
+					}
 				}
 				case MoveDirection.South:
 				{
-					animation.play('walk-front');					
+					if (animation.curAnim.name != 'walk-front')
+					{
+						animation.play('walk-front');
+					}					
 				}
 				case MoveDirection.East:
 				{
-					animation.play('walk-right');
+					if (animation.curAnim.name != 'walk-right')
+					{
+						animation.play('walk-right');
+					}
 				}
 				case MoveDirection.West:
 				{
-					animation.play('walk-left');
+					if (animation.curAnim.name != 'walk-left')
+					{
+						animation.play('walk-left');
+					}
 				}
 				case _:{}
 			}

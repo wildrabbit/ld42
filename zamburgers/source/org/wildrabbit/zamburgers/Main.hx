@@ -1,5 +1,6 @@
 package org.wildrabbit.zamburgers;
 
+import flixel.FlxG;
 import flixel.FlxGame;
 import openfl.display.Sprite;
 
