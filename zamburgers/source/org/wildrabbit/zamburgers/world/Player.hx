@@ -65,6 +65,12 @@ class Player extends FlxSprite
 		animation.add('jump-back', [2, 2, 2], 12, false);
 		animation.add('jump-left', [3, 3, 3], 12, false);
 		animation.add('jump-right', [4, 4, 4], 12, false);
+		animation.add('walk-front', [7,8,9,10], 8);
+		animation.add('walk-back', [12,13,14,15], 8);
+		animation.add('walk-left', [16,17,18,19], 8);
+		animation.add('walk-right', [20,21,22,23], 8);
+		animation.add('fall', [6], 16);
+		animation.add('win', [11], 1, false);
 		
 		
 		animation.play('idle');
@@ -101,15 +107,19 @@ class Player extends FlxSprite
 		FlxG.watch.add(this, "visible");
 		FlxG.watch.add(this, "exists");
 		
-		animation.finishCallback = onJumpFinished;
+		animation.finishCallback = onAnimFinished;
 
 	}
 	
-	function onJumpFinished(name:String):Void
+	function onAnimFinished(name:String):Void
 	{
 		if (StringTools.startsWith(name, 'jump'))
 		{
 			animation.play('idle');
+		}
+		else if (name == 'win')
+		{
+			playerReachedGoal.dispatch();
 		}
 	}
 	
@@ -151,9 +161,7 @@ class Player extends FlxSprite
 			grid.stepped(col, row);
 			if (grid.getTileAtCoords(col, row) == Grid.INVALID_TILE_ID)
 			{
-				FlxTween.color(this, 0.5, FlxColor.WHITE, FlxColor.TRANSPARENT, {onComplete: function(t:FlxTween) {playerDropped.dispatch(); }});
-				FlxTween.tween(this.scale, {x:0.15, y:0.15}, 0.3);
-				updateFunction = updateDeath;
+				fallSequence();
 				return;
 			}
 		}
@@ -200,8 +208,7 @@ class Player extends FlxSprite
 		
 		if (goal.containsPoint(FlxPoint.weak(posX, posY)))
 		{
-			playerReachedGoal.dispatch();
-			updateFunction = updateDeath;
+			winSequence();
 			return;
 		}
 		
@@ -296,9 +303,7 @@ class Player extends FlxSprite
 				
 				if (grid.getTileAtCoords(targetCol, targetRow) == Grid.INVALID_TILE_ID)
 				{
-					FlxTween.color(this, 0.5, FlxColor.WHITE, FlxColor.TRANSPARENT, {onComplete: function(t:FlxTween) {playerDropped.dispatch(); }});
-					FlxTween.tween(this.scale, {x:0.15, y:0.15}, 0.3);
-					updateFunction = updateDeath;
+					fallSequence();
 				}
 				else
 				{
@@ -316,6 +321,21 @@ class Player extends FlxSprite
 		}
 
 		return dir;
+	}
+	
+	function fallSequence():Void
+	{
+		animation.play('fall');
+		FlxTween.color(this, 0.8, FlxColor.WHITE, FlxColor.fromRGB(0,0,0,32), {onComplete: function(t:FlxTween) {playerDropped.dispatch(); }});
+		FlxTween.tween(this.scale, {x:0.2, y:0.2}, 0.5);
+		updateFunction = updateDeath;
+	}
+	
+	function winSequence():Void
+	{
+		animation.play('win');
+		setPosition(goal.x + goal.width / 2, goal.y + goal.height / 2);
+		updateFunction = updateDeath;
 	}
 	
 	function enterFreeMovement(refRect:FlxRect):Void
@@ -366,13 +386,38 @@ class Player extends FlxSprite
 		{
 			velocity.set(speed, 0);
 			velocity.rotate(FlxPoint.weak(), angle);
+			switch(dir)
+			{
+				case MoveDirection.North:
+				{
+					animation.play('walk-back');
+				}
+				case MoveDirection.South:
+				{
+					animation.play('walk-front');					
+				}
+				case MoveDirection.East:
+				{
+					animation.play('walk-right');
+				}
+				case MoveDirection.West:
+				{
+					animation.play('walk-left');
+				}
+				case _:{}
+			}
+		}
+		else
+		{
+			animation.play('idle');
 		}
 		
 		return dir;
 	}
 	
 	public function updateDeath(elapsed:Float):Void
-	{		
+	{
+		super.update(elapsed);
 	}
 	
 	

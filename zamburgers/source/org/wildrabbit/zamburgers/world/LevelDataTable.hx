@@ -29,6 +29,7 @@ typedef LevelJson =
 	@:optional var entranceCustomSprite:String;
 	@:optional var exitCustomSprite:String;
 	@:optional var goalCustomSprite:String;
+	@:optional var msg:String;
  }
 
 /**
