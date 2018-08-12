@@ -80,12 +80,7 @@ class PlayState extends FlxState
 		{
 			FlxG.sound.toggleMuted();
 		}
-		if (FlxG.keys.justPressed.L)
-		{
-			loadLevelTable();
-			loadLevelByIndex(currentLevelIdx);				
-		}
-		else if (FlxG.keys.justPressed.R)
+		if (FlxG.keys.justPressed.R)
 		{
 			loadLevelByIndex(currentLevelIdx);				
 		}
@@ -94,6 +89,7 @@ class PlayState extends FlxState
 			currentLevelIdx = 0;
 			loadLevelByIndex(currentLevelIdx);				
 		}
+#if !FLX_NO_DEBUG		
 		else if (FlxG.keys.justPressed.N)
 		{
 			currentLevelIdx = (currentLevelIdx + 1) % levelDataTable.numLevels;
@@ -104,6 +100,7 @@ class PlayState extends FlxState
 			currentLevelIdx = (levelDataTable.numLevels + currentLevelIdx - 1) % levelDataTable.numLevels;
 			loadLevelByIndex(currentLevelIdx);
 		}
+#end
 	}
 	
 	function levelExit():Void

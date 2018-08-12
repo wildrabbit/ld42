@@ -3,6 +3,8 @@ package org.wildrabbit.zamburgers;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.text.FlxText;
+import flixel.util.FlxTimer;
 
 /**
  * ...
@@ -18,6 +20,9 @@ class IntroState extends FlxState
 		
 		var sp:FlxSprite = new FlxSprite(0, 0, "assets/images/main.png");
 		add(sp);
+		
+		var press:FlxText = new FlxText(20, FlxG.height - 20, 200, "Press any key to continue", 10);
+		add(press);
 	}
 	
 	override public function update(dt:Float):Void
