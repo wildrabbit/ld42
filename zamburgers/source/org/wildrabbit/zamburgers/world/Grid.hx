@@ -11,8 +11,8 @@ import flixel.tile.FlxTilemap;
 
  class Grid extends FlxTilemap 
 {
-	private static inline var TILE_WIDTH:Int = 64;
-	private static inline var TILE_HEIGHT:Int = 64;
+	public static inline var TILE_WIDTH:Int = 64;
+	public static inline var TILE_HEIGHT:Int = 64;
 
 	public static inline var INVALID_TILE_ID:Int = -1;
 	private static inline var INVALID_GRID_IDX:Int = -1;

@@ -71,8 +71,8 @@ class Player extends FlxSprite
 		
 		
 		this.grid = grid;
-		this.entrance = FlxRect.get(entrance.x, entrance.y, entrance.x + entrance.width, entrance.y + entrance.height);
-		this.exit = FlxRect.get(exit.x, exit.y, exit.x + exit.width, exit.y + exit.height);
+		this.entrance = FlxRect.get(entrance.x, entrance.y, entrance.width, entrance.height);
+		this.exit = FlxRect.get(exit.x, exit.y, exit.width, exit.height);
 		this.goal = goal;
 		referenceArea = this.entrance;
 		
@@ -153,9 +153,6 @@ class Player extends FlxSprite
 		var dir:MoveDirection = move();
 		super.update(elapsed);
 	
-		//x = FlxMath.bound(x, FlxG.worldBounds.x, FlxG.worldBounds.x + FlxG.worldBounds.width - width);
-		//y = FlxMath.bound(y, FlxG.worldBounds.y, FlxG.worldBounds.y + FlxG.worldBounds.height - height);	
-		
 		x = FlxMath.bound(x, referenceArea.x, referenceArea.x + referenceArea.width - width);
 		y = FlxMath.bound(y, referenceArea.y, referenceArea.y + referenceArea.height - height);
 		
