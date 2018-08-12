@@ -59,7 +59,16 @@ class Player extends FlxSprite
 	public function new() 
 	{
 		super();
-		makeGraphic(24, 32);
+		loadGraphic("assets/images/chara-test-Sheet.png", true, 48, 64);
+		animation.add('idle', [0, 1], 2);
+		animation.add('jump-front', [5, 5, 5], 12, false);
+		animation.add('jump-back', [2, 2, 2], 12, false);
+		animation.add('jump-left', [3, 3, 3], 12, false);
+		animation.add('jump-right', [4, 4, 4], 12, false);
+		
+		
+		animation.play('idle');
+		//makeGraphic(24, 32);
 	}
 	
 	public function initFree(x:Float, y:Float, grid:Grid, entrance:FlxSprite, exit:FlxSprite, goal:FlxRect):Void
@@ -91,6 +100,17 @@ class Player extends FlxSprite
 		FlxG.watch.add(this, "color");
 		FlxG.watch.add(this, "visible");
 		FlxG.watch.add(this, "exists");
+		
+		animation.finishCallback = onJumpFinished;
+
+	}
+	
+	function onJumpFinished(name:String):Void
+	{
+		if (StringTools.startsWith(name, 'jump'))
+		{
+			animation.play('idle');
+		}
 	}
 	
 	public function initGrid(x:Int, y:Int, grid:Grid, entrance:FlxSprite, exit:FlxSprite):Void
@@ -106,7 +126,26 @@ class Player extends FlxSprite
 	
 	public function enterGrid(col:Int, row:Int, stepped:Bool = true):Void
 	{
+		if (row > gridY)
+		{
+			animation.play('jump-front');
+		}
+		else if (row < gridY)
+		{
+			animation.play('jump-back');
+		}
+		else if (col > gridX)
+		{
+			animation.play('jump-right');
+		}
+		else if (col < gridX)
+		{
+			animation.play('jump-left');
+		}
+		
+		
 		setCoords(col, row);
+		
 		if (stepped)
 		{			
 			grid.stepped(col, row);
@@ -236,6 +275,22 @@ class Player extends FlxSprite
 			var targetRow: Int = gridY + deltaRow;
 			if (grid.canBeStepped(targetCol, targetRow))
 			{
+				if (targetRow > gridY)
+				{
+					animation.play('jump-front');
+				}
+				else if (targetRow < gridY)
+				{
+					animation.play('jump-back');
+				}
+				else if (targetCol > gridX)
+				{
+					animation.play('jump-right');
+				}
+				else if (targetCol < gridX)
+				{
+					animation.play('jump-left');
+				}
 				setCoords(targetCol, targetRow);
 				grid.stepped(targetCol, targetRow);
 				

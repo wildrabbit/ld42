@@ -155,7 +155,7 @@ class PlayState extends FlxState
 		entrance = new FlxSprite(entranceX, entranceY);
 		var entranceHeight:Int = Math.round((FlxG.height - gridHeight) / 2);
 		
-		entrance.makeGraphic(gridWidth, entranceHeight, FlxColor.GRAY);
+		entrance.makeGraphic(gridWidth, entranceHeight, FlxColor.fromRGBFloat(0.95, 0.95,0.89));
 		gameGroup.add(entrance);
 		
 		var gridY:Int  = entranceY + entranceHeight;
@@ -166,7 +166,7 @@ class PlayState extends FlxState
 		gameGroup.add(grid);
 		
 		exit = new FlxSprite(entranceX, gridY + gridHeight);
-		exit.makeGraphic(gridWidth, entranceHeight, FlxColor.GRAY);
+		exit.makeGraphic(gridWidth, entranceHeight, FlxColor.fromRGBFloat(0.95, 0.95,0.89));
 		gameGroup.add(exit);
 		
 		goal = new FlxSprite(exit.x + levelData.goalRect.x, exit.y + levelData.goalRect.y);
