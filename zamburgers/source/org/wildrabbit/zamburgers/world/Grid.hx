@@ -159,7 +159,7 @@ import flixel.tile.FlxTilemap;
 		{
 			return widthInTiles - 1;
 		}
-		return cast (refX - x) / TILE_WIDTH;
+		return Std.int((refX - x) / TILE_WIDTH);
 	}
 	
 	public function getClosestRow(refY:Float):Int
@@ -172,7 +172,7 @@ import flixel.tile.FlxTilemap;
 		{
 			return heightInTiles - 1;
 		}
-		return cast (refY - y) / TILE_HEIGHT;		
+		return Std.int((refY - y) / TILE_HEIGHT);		
 	}
 	
 	public function canBeStepped(col:Int, row:Int):Bool
