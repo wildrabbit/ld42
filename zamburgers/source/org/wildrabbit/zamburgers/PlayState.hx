@@ -42,6 +42,8 @@ class PlayState extends FlxState
 	var goal:FlxSprite;
 	
 	var lvInfo:FlxText;
+	
+	var trap:FlxText;
 
 	override public function create():Void
 	{
@@ -65,6 +67,8 @@ class PlayState extends FlxState
 		
 		lvInfo = new FlxText(0, 0, 200, '', 12);
 		hudGroup.add(lvInfo);
+		
+		trap = new FlxText(0,0,200, "It's a trap!",10);
 		
 		loadLevelByIndex(currentLevelIdx);		
 	}
@@ -119,23 +123,39 @@ class PlayState extends FlxState
 		}
 	}
 	
-	function resetLevel():Void
+	function dropped():Void
 	{
-		// Kill everything, restart stuff
 		if (currentLevelIdx == 0)
 		{
-			currentLevelIdx = 1;
+			hudGroup.add(trap);
+			trap.setPosition(player.x, player.y - trap.height - 8);		
 		}
+	}
+	
+	function resetLevel():Void
+	{
+		var callback = function (timer:FlxTimer)
+		{
+			// Kill everything, restart stuff
+			if (currentLevelIdx == 0)
+			{
+				currentLevelIdx = 1;
+				hudGroup.remove(trap);
+				
+			}
 
-		loadLevelByIndex(currentLevelIdx);
-		//player.kill();
-		//player.reset(0, 0);
-		//player.initFree(64 * (3 - 1 / 2), 64, grid, entrance, exit, goal.getHitbox());
-		//
-		//grid.kill();
-		//grid.reset(0,0);
-		//grid.initialize(levelArray.array, levelArray.w, levelArray.h);
-		//grid.setPosition(240, 140);						
+			loadLevelByIndex(currentLevelIdx);
+			//player.kill();
+			//player.reset(0, 0);
+			//player.initFree(64 * (3 - 1 / 2), 64, grid, entrance, exit, goal.getHitbox());
+			//
+			//grid.kill();
+			//grid.reset(0,0);
+			//grid.initialize(levelArray.array, levelArray.w, levelArray.h);
+			//grid.setPosition(240, 140);						
+		}
+		new FlxTimer().start(0.5, callback);
+
 	}
 	
 	function loadLevelByIndex(idx:Int):Void
@@ -195,6 +215,7 @@ class PlayState extends FlxState
 		player = new Player();
 		player.initFree(entranceX + levelData.playerStart.x, entranceY + levelData.playerStart.y, grid, entrance, exit, goal.getHitbox());
 		player.playerDropped.add(resetLevel);
+		player.playerDroppedStart.add(dropped);
 		player.playerReachedGoal.add(levelExit);		
 		gameGroup.add(player);
 	}

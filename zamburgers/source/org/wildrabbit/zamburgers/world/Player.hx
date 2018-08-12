@@ -57,7 +57,8 @@ class Player extends FlxSprite
 	
 	public var playerDropped:FlxSignal = new FlxSignal();
 	public var playerReachedGoal:FlxSignal = new FlxSignal();
-	
+	public var playerDroppedStart:FlxSignal = new FlxSignal();
+
 	public function new() 
 	{
 		super();
@@ -111,6 +112,7 @@ class Player extends FlxSprite
 		
 		animation.finishCallback = onAnimFinished;
 		animation.callback = onAnimFrameChanged;
+		
 	}
 	
 	function onAnimFrameChanged(name:String, frame:Int, idx:Int):Void
@@ -334,6 +336,9 @@ class Player extends FlxSprite
 	function fallSequence():Void
 	{
 		animation.play('fall');
+		
+		playerDroppedStart.dispatch();
+		
 		FlxG.sound.list.forEach(function(s:FlxSound):Void { s.stop(); });
 		FlxG.sound.play(AssetPaths.Fall__wav, 0.7);
 		FlxTween.color(this, 0.8, FlxColor.WHITE, FlxColor.fromRGB(0,0,0,32), {onComplete: function(t:FlxTween) {playerDropped.dispatch(); }});
