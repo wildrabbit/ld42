@@ -45,7 +45,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-		
+		bgColor = FlxColor.fromString("#03181c");
 		currentLevelIdx = 0;
 				
 		loadLevelTable();
@@ -155,7 +155,7 @@ class PlayState extends FlxState
 		entrance = new FlxSprite(entranceX, entranceY);
 		var entranceHeight:Int = Math.round((FlxG.height - gridHeight) / 2);
 		
-		entrance.makeGraphic(gridWidth, entranceHeight, FlxColor.fromRGBFloat(0.95, 0.95,0.89));
+		entrance.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#8d6e93"));
 		gameGroup.add(entrance);
 		
 		var gridY:Int  = entranceY + entranceHeight;
@@ -166,11 +166,14 @@ class PlayState extends FlxState
 		gameGroup.add(grid);
 		
 		exit = new FlxSprite(entranceX, gridY + gridHeight);
-		exit.makeGraphic(gridWidth, entranceHeight, FlxColor.fromRGBFloat(0.95, 0.95,0.89));
+		exit.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#8d6e93"));
 		gameGroup.add(exit);
 		
 		goal = new FlxSprite(exit.x + levelData.goalRect.x, exit.y + levelData.goalRect.y);
 		goal.makeGraphic(levelData.goalRect.w, levelData.goalRect.h, FlxColor.BROWN);
+		goal.loadGraphic("assets/images/tile-pholders.png", true, 64, 64);
+		goal.animation.add('def', [(currentLevelIdx != 0) ? 24 : 25]);
+		goal.animation.play('def');
 		gameGroup.add(goal);
 
 		FlxG.worldBounds.set(entranceX, entranceY, gridWidth, FlxG.height);
