@@ -8,6 +8,7 @@ import flixel.math.FlxMath;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import org.wildrabbit.zamburgers.world.Grid;
 import org.wildrabbit.zamburgers.world.LevelDataTable;
 import org.wildrabbit.zamburgers.world.Player;
@@ -71,6 +72,10 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+		if (FlxG.keys.justPressed.M)
+		{
+			FlxG.sound.toggleMuted();
+		}
 		if (FlxG.keys.justPressed.L)
 		{
 			loadLevelTable();
@@ -101,7 +106,11 @@ class PlayState extends FlxState
 	{
 		if (currentLevelIdx == levelDataTable.numLevels - 1)
 		{
-			trace("YAY, WON");			
+			var callback = function(timer:FlxTimer)
+			{
+				FlxG.switchState(new GameWonState());
+			};
+			new FlxTimer().start(1, callback);
 		}
 		else
 		{
