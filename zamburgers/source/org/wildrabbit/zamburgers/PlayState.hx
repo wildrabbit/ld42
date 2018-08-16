@@ -3,16 +3,22 @@ package org.wildrabbit.zamburgers;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+import flixel.addons.editors.tiled.TiledLayer;
 import flixel.group.FlxGroup;
-import flixel.math.FlxMath;
-import flixel.math.FlxRect;
 import flixel.text.FlxText;
+import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import haxe.io.Path;
 import org.wildrabbit.zamburgers.world.Grid;
 import org.wildrabbit.zamburgers.world.LevelDataTable;
 import org.wildrabbit.zamburgers.world.Player;
 import org.wildrabbit.zamburgers.world.TileDataTable;
+
+
+import flixel.addons.editors.tiled.TiledMap;
+import flixel.addons.editors.tiled.TiledTileSet;
+import flixel.addons.editors.tiled.TiledTileLayer;
 
 typedef LevelData =
 {
@@ -68,7 +74,7 @@ class PlayState extends FlxState
 		lvInfo = new FlxText(0, 0, 200, '', 12);
 		hudGroup.add(lvInfo);
 		
-		trap = new FlxText(0,0,200, "It's a trap!",10);
+    		trap = new FlxText(0,0,200, "It's a trap!",10);
 		
 		loadLevelByIndex(currentLevelIdx);		
 	}
@@ -178,6 +184,8 @@ class PlayState extends FlxState
 			grid = null;			
 		}
 		
+		loadBackground(levelData.bgSource);
+		
 		var gridWidth:Int = levelData.width * Grid.TILE_WIDTH;
 		var gridHeight:Int = levelData.height * Grid.TILE_HEIGHT;
 		var entranceX:Int =  Math.round((FlxG.width - gridWidth) / 2);
@@ -186,7 +194,7 @@ class PlayState extends FlxState
 		entrance = new FlxSprite(entranceX, entranceY);
 		var entranceHeight:Int = Math.round((FlxG.height - gridHeight) / 2);
 		
-		entrance.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#8d6e93"));
+		entrance.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#008d6e93"));
 		gameGroup.add(entrance);
 		
 		var gridY:Int  = entranceY + entranceHeight;
@@ -197,7 +205,7 @@ class PlayState extends FlxState
 		gameGroup.add(grid);
 		
 		exit = new FlxSprite(entranceX, gridY + gridHeight);
-		exit.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#8d6e93"));
+		exit.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#008d6e93"));
 		gameGroup.add(exit);
 		
 		goal = new FlxSprite(exit.x + levelData.goalRect.x, exit.y + levelData.goalRect.y);
@@ -215,6 +223,38 @@ class PlayState extends FlxState
 		player.playerDroppedStart.add(dropped);
 		player.playerReachedGoal.add(levelExit);		
 		gameGroup.add(player);
+	}
+	
+	function loadBackground(path:FlxTiledMapAsset):Void
+	{
+		var leMap:TiledMap = new TiledMap(path);
+		
+		for (layer in leMap.layers)
+		{
+			if (layer.type != TiledLayerType.TILE) continue;
+			var tileLayer:TiledTileLayer = cast layer;
+			var tilesheetName:String = tileLayer.properties.get("tileset");
+			
+			var tileset:TiledTileSet = null;
+			for (ts in leMap.tilesets)
+			{
+				if (ts.name == tilesheetName)
+				{
+					tileset = ts;
+					break;
+				}
+			}
+			
+			if (tileset != null)
+			{
+				var imgPath:Path = new Path(tileset.imageSource);
+				var processedPath = "assets/images/" + imgPath.file + '.' + imgPath.ext;
+				
+				var map:FlxTilemap = new FlxTilemap();
+				map.loadMapFromArray(tileLayer.tileArray, leMap.width, leMap.height, processedPath, tileset.tileWidth, tileset.tileHeight, OFF, tileset.firstGID, 1, 1);
+				gameGroup.add(map);
+			}
+		}
 	}
 
 	function loadLevelTable():Void

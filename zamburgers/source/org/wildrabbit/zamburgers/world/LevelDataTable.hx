@@ -25,6 +25,7 @@ typedef LevelJson =
 	var width:Int;
 	var height:Int;
 	var tileIDs:Array<Int>;
+	var bgSource:String;
 	
 	@:optional var entranceCustomSprite:String;
 	@:optional var exitCustomSprite:String;
