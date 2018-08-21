@@ -1,8 +1,8 @@
 [
 	{
 		"id":0,
-		"playerStart": {"x": 160, "y":80},
-		"goalRect": {"x": 128, "y": 48, "w":64, "h":64},
+		"playerStart": {"x": 160, "y":88},
+		"goalRect": {"x": -128, "y": 4, "w":64, "h":64},
 		"width":5,
 		"height":5,
 		"tileIDs":[
@@ -12,11 +12,11 @@
 			-1, -1, 0, -1, -1,
 			-1, -1, 0, -1, -1],
 		"msg": "Easy!",
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h5.tmx"
 	},
 	{
 		"id":1,
-		"playerStart": {"x": 96, "y":80},
+		"playerStart": {"x": 96, "y":88},
 		"goalRect": {"x": 64, "y": 64, "w":64, "h":64},
 		"width":3,
 		"height":4,
@@ -25,11 +25,11 @@
 					-1, 1, -1,
 					-1, 1, -1],
 		"msg": "Hmpf",
-		"bgSource": "assets/data/background.tmx"					
+		"bgSource": "assets/data/background-h4.tmx"					
 	},
 	{
 		"id":2,
-		"playerStart": {"x": 160, "y":80},
+		"playerStart": {"x": 160, "y":88},
 		"goalRect": {"x": 128, "y": 64, "w":64, "h":64},
 		"width":5,
 		"height":4,
@@ -38,11 +38,11 @@
 					0, 13, 1, 13, 0,
 					0, 7, 1, 7, 0],
 		"msg": "Hmpf",
-		"bgSource": "assets/data/background.tmx"					
+		"bgSource": "assets/data/background-h4.tmx"					
 	},
 	{
 		"id":3,
-		"playerStart": {"x": 96, "y":64},
+		"playerStart": {"x": 96, "y":72},
 		"goalRect": {"x": 64, "y": 64, "w":64, "h":64},
 		"width":3,
 		"height":4,
@@ -50,11 +50,11 @@
 					 0, 2, 1,
 					 1, 6, -1,
 					 -1, 2, 0],
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h4.tmx"
 	},
 	{
 		"id":4,
-		"playerStart": {"x": 128, "y":96},
+		"playerStart": {"x": 128, "y":104},
 		"goalRect": {"x": 96, "y": 64, "w":64, "h":64},
 		"width":4,
 		"height":4,
@@ -63,11 +63,11 @@
 					 7, 6, 2, 0,
 					 -1, 8, 1, 7]
 					 ,
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h4.tmx"
 	},
 	{
 		"id":5,
-		"playerStart": {"x": 128, "y":96},
+		"playerStart": {"x": 128, "y":104},
 		"goalRect": {"x": 96, "y": 64, "w":64, "h":64},
 		"width":4,
 		"height":4,
@@ -75,12 +75,12 @@
 					 -1, 2, 1, 2,
 					 0, 6, 2, -1,
 					 1, 6, 7, 2],
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h4.tmx"
 	}
 	,
 	{
 		"id":6,
-		"playerStart": {"x": 128, "y":96},
+		"playerStart": {"x": 128, "y":104},
 		"goalRect": {"x": 96, "y": 64, "w":64, "h":64},
 		"width":4,
 		"height":4,
@@ -88,12 +88,12 @@
 					 6, -1, 2, 7,
 					 8, 1, -1, 8,
 					 -1, 2, 7, 6],
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h4.tmx"
 	}
 	,
 	{
 		"id":7,
-		"playerStart": {"x": 160, "y":96},
+		"playerStart": {"x": 160, "y":104},
 		"goalRect": {"x": 128, "y": 64, "w":64, "h":64},
 		"width":5,
 		"height":4,
@@ -102,12 +102,12 @@
 					 2, 7, 0, 7, 1,
 					 6 ,1, 6, 2, 6]
 					 ,
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h4.tmx"
 	}
 	,
 	{
 		"id":8,
-		"playerStart": {"x": 160, "y":96},
+		"playerStart": {"x": 160, "y":104},
 		"goalRect": {"x": 128, "y": 64, "w":64, "h":64},
 		"width":5,
 		"height":4,
@@ -115,12 +115,12 @@
 					 0, 2, 1, 8, 6,
 					 6, -1, 0, -1, 2,
 					 1 ,0, 7, 0, 1],
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h4.tmx"
 	}
 	,
 	{
 		"id":9,
-		"playerStart": {"x": 160, "y":64},
+		"playerStart": {"x": 160, "y":72},
 		"goalRect": {"x": 128, "y": 64, "w":64, "h":64},
 		"width":5,
 		"height":5,
@@ -129,11 +129,11 @@
 					 2, 1, -1, 0, 2,
 					 2 ,1, 2, 0, 1,
 					 0 ,2, 1, 2, 1],
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h5.tmx"
 	}	,
 	{
 		"id":10,
-		"playerStart": {"x": 160, "y":64},
+		"playerStart": {"x": 160, "y":72},
 		"goalRect": {"x": 128, "y": 64, "w":64, "h":64},
 		"width":5,
 		"height":5,
@@ -142,11 +142,11 @@
 					 -1, 2, 3, 2, -1,
 					 2 ,1, 0, 1, 2,
 					 0 ,2, -1, 2, 0],
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h5.tmx"
 	}	,
 	{
 		"id":11,
-		"playerStart": {"x": 160, "y":32},
+		"playerStart": {"x": 160, "y":40},
 		"goalRect": {"x": 128, "y": 32, "w":64, "h":64},
 		"width":5,
 		"height":7,
@@ -158,6 +158,6 @@
 					 1 ,3, 1, 2, 1,
 					 0 ,2, 2, 0, 3
 				 ],
-		"bgSource": "assets/data/background.tmx"
+		"bgSource": "assets/data/background-h7.tmx"
 	}
 ]
