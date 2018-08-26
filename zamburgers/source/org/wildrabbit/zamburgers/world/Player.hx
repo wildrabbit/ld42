@@ -222,10 +222,14 @@ class Player extends FlxSprite
 	function updateFreeMovement(elapsed:Float):Void
 	{
 		var dir:MoveDirection = move();
+		
+		var oldX:Float = x;
+		var oldY:Float = y;
+		
 		super.update(elapsed);
 		
-		x = FlxMath.bound(x, referenceArea.x, referenceArea.x + referenceArea.width - width);
-		y = FlxMath.bound(y, referenceArea.y, referenceArea.y + referenceArea.height - height);
+		x = FlxMath.bound(x, referenceArea.x - width/2, referenceArea.x + referenceArea.width - width/2);
+		y = FlxMath.bound(y, referenceArea.y - height, referenceArea.y - height + referenceArea.height);
 		
 		posX = x + anchor.x * width;
 		posY = y + anchor.y * height;
@@ -238,31 +242,49 @@ class Player extends FlxSprite
 		
 		var gridRow:Int = -1;
 		var gridCol:Int = -1;
+		
+		var leftThreshold:Bool = Math.abs(posX - grid.x) < THRESHOLD_ENTER_GRID;
+		var rightThreshold:Bool = Math.abs(posX - (grid.x + grid.width + width * anchor.x)) < THRESHOLD_ENTER_GRID;
+		var topThreshold:Bool = Math.abs(posY - grid.y + Grid.Y_OFFSET) < THRESHOLD_ENTER_GRID;
+		var botThreshold:Bool = Math.abs(posY  - (grid.y + grid.height + height * anchor.y)  + Grid.Y_OFFSET) < THRESHOLD_ENTER_GRID;
 				
-		if (dir == MoveDirection.South && (Math.abs(posY - grid.y) < THRESHOLD_ENTER_GRID))
+		if (dir == MoveDirection.South && topThreshold)
 		{
-			gridRow = 0;
-			gridCol = grid.getClosestColumn(posX);
+			if (posX >= grid.x && posX <= grid.x + grid.width + width * anchor.x)
+			{
+				gridRow = 0;
+				gridCol = grid.getClosestColumn(posX);
+			}
 		}
-		else if (dir == MoveDirection.North && (Math.abs(posY  - (grid.y + grid.height + height * anchor.y)) < THRESHOLD_ENTER_GRID))
+		else if (dir == MoveDirection.North && botThreshold)
 		{
-			gridRow = grid.heightInTiles - 1;
-			gridCol = grid.getClosestColumn(posX);			
+			if (posX >= grid.x && posX <= grid.x + grid.width + width * anchor.x)
+			{
+				gridRow = grid.heightInTiles - 1;
+				gridCol = grid.getClosestColumn(posX);			
+			}
 		}
-		else if (dir == MoveDirection.East && (Math.abs(posX - grid.x) < THRESHOLD_ENTER_GRID))
+		else if (dir == MoveDirection.East && leftThreshold &&  posY >= grid.y && posY <= grid.y + height * anchor.y)
 		{
-			gridRow = grid.heightInTiles - 1;
-			gridCol = grid.getClosestRow(posY);			
+			gridRow = grid.getClosestRow(posY);	
+			gridCol = 0;		
 		}
-		else if (dir == MoveDirection.West && (Math.abs(posX - (grid.x + grid.width + width * anchor.x)) < THRESHOLD_ENTER_GRID))
+		else if (dir == MoveDirection.West && rightThreshold && posY >= grid.y && posY <= grid.y + height * anchor.y)
 		{
-			gridRow = grid.heightInTiles - 1;
-			gridCol = grid.getClosestRow(posY);			
+			gridRow = grid.getClosestRow(posY);	
+			gridCol = grid.widthInTiles - 1;	
 		}
 		
 		if (grid.canBeStepped(gridCol, gridRow))
 		{
 			enterGrid(gridCol, gridRow, true);
+		}
+		else if (!entrance.containsPoint(FlxPoint.weak(posX, posY)) && !exit.containsPoint(FlxPoint.weak(posX, posY)))
+		{
+			x = oldX;
+			y = oldY;
+			posX = x + anchor.x * width;
+			posY = y + anchor.y * height;
 		}
 	}
 	

@@ -17,6 +17,8 @@ import flixel.tile.FlxTilemap;
 	public static inline var INVALID_TILE_ID:Int = -1;
 	private static inline var INVALID_GRID_IDX:Int = -1;
 	
+	public static inline var Y_OFFSET:Int = 8;
+	
 	private var _tileData:TileDataTable;
 	private var _grid:Array<Int>;
 	
@@ -151,27 +153,11 @@ import flixel.tile.FlxTilemap;
 	
 	public function getClosestColumn(refX:Float):Int
 	{
-		if (refX <= x) 
-		{
-			return 0;
-		}
-		else if (refX >= x + width)
-		{
-			return widthInTiles - 1;
-		}
-		return Std.int((refX - x) / TILE_WIDTH);
+		return  Std.int((refX - x) / TILE_WIDTH);
 	}
 	
 	public function getClosestRow(refY:Float):Int
 	{
-		if (refY <= y) 
-		{
-			return 0;
-		}
-		else if (refY >= y + height)
-		{
-			return heightInTiles - 1;
-		}
 		return Std.int((refY - y) / TILE_HEIGHT);		
 	}
 	

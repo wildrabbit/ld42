@@ -12,7 +12,7 @@
 			-1, -1, 0, -1, -1,
 			-1, -1, 0, -1, -1],
 		"msg": "Easy!",
-		"bgSource": "assets/data/background-h5.tmx"
+		"bgSource": "assets/data/background-h5-fake.tmx"
 	},
 	{
 		"id":1,

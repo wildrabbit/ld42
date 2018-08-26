@@ -11,7 +11,7 @@
     <movie version="1" />
     <movie minorVersion="0" />
     <movie platform="Lime" />
-    <movie background="000000" />
+    <movie background="1E2247" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
@@ -19,20 +19,20 @@
     <class path="D:\development\HaxeToolkit\haxe\lib\openfl\8,3,0\src" />
     <class path="D:\development\HaxeToolkit\haxe\lib\lime\6,4,0" />
     <class path="D:\development\HaxeToolkit\haxe\lib\hscript\2,2,0" />
+    <class path="D:\development\HaxeToolkit\haxe\lib\flixel-addons\2,7,0" />
     <class path="source" />
-    <class path="D:\development\HaxeToolkit\haxe\lib\openfl\8,3,0\src\externs\core\flash" />
     <class path="D:\development\HaxeToolkit\haxe\lib\openfl\8,3,0\src\externs\core\openfl" />
     <class path="D:\development\HaxeToolkit\haxe\lib\openfl\8,3,0\src\externs\extras" />
-    <class path="export\flash\haxe" />
+    <class path="export\html5\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="flixel=4.4.2&#xA;openfl=8.3.0&#xA;lime=6.4.0&#xA;hscript=2.2.0&#xA;tools=6.4.0&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;display" />
+    <option directives="flixel=4.4.2&#xA;openfl=8.3.0&#xA;lime=6.4.0&#xA;hscript=2.2.0&#xA;flixel-addons=2.7.0&#xA;tools=6.4.0&#xA;ANDROID_SDK=d:\development\android\sdk&#xA;ANDROID_SETUP=true&#xA;FLX_NO_DEBUG&#xA;ANDROID_NDK_ROOT=d:\development\android\ndk&#xA;howlerjs&#xA;no-compilation&#xA;openfl-html5&#xA;NAPE_RELEASE_BUILD&#xA;lime-html5&#xA;JAVA_HOME=d:\development\java\jdk1.8.0_171&#xA;html5&#xA;web&#xA;html5&#xA;display" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="--macro openfl._internal.utils.ExtraParams.include()&#xA;--macro lime.Lib.extraParams()&#xA;--macro flixel.system.macros.FlxDefines.run()&#xA;-swf-version 11.8&#xA;-debug " />
+    <option additional="--macro openfl._internal.utils.ExtraParams.include()&#xA;--macro lime.Lib.extraParams()&#xA;--remap flash:openfl&#xA;--macro flixel.system.macros.FlxDefines.run()" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

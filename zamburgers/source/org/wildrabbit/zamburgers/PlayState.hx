@@ -4,7 +4,10 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.addons.editors.tiled.TiledLayer;
+import flixel.addons.editors.tiled.TiledObjectLayer;
 import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import flixel.text.FlxText;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxColor;
@@ -184,53 +187,69 @@ class PlayState extends FlxState
 			grid = null;			
 		}
 		
-		loadBackground(levelData.bgSource);
+		var playerStart:FlxPoint = FlxPoint.get();
+		var goalData:FlxRect = FlxRect.get();
+		loadBackground(levelData.bgSource, playerStart, goalData);
 		
 		var gridWidth:Int = levelData.width * Grid.TILE_WIDTH;
 		var gridHeight:Int = levelData.height * Grid.TILE_HEIGHT;
-		var entranceX:Int =  Math.round((FlxG.width - gridWidth) / 2);
-		var entranceY:Int= 0;
-		
-		entrance = new FlxSprite(entranceX, entranceY);
-		var entranceHeight:Int = Math.round((FlxG.height - gridHeight) / 2);
-		
-		entrance.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#008d6e93"));
-		gameGroup.add(entrance);
-		
-		var gridY:Int  = entranceY + entranceHeight;
 		grid = new Grid();
 		grid.setTileDataTable(tileDataTable);
 		grid.initialize(levelData.tileIDs, levelData.width, levelData.height);
-		grid.setPosition(entranceX, gridY);
+		grid.setPosition( Math.round((FlxG.width - gridWidth) / 2), entrance.y + entrance.height + Grid.Y_OFFSET);
 		gameGroup.add(grid);
 		
-		exit = new FlxSprite(entranceX, gridY + gridHeight);
-		exit.makeGraphic(gridWidth, entranceHeight, FlxColor.fromString("#008d6e93"));
-		gameGroup.add(exit);
-		
-		goal = new FlxSprite(exit.x + levelData.goalRect.x, exit.y + levelData.goalRect.y);
-		goal.makeGraphic(levelData.goalRect.w, levelData.goalRect.h, FlxColor.BROWN);
-		goal.loadGraphic("assets/images/tile-pholders.png", true, 64, 64);
-		goal.animation.add('def', [(currentLevelIdx != 0) ? 24 : 25]);
-		goal.animation.play('def');
+		goal = new FlxSprite(goalData.x, goalData.y);
+		goal.makeGraphic(Math.round(goalData.width), Math.round(goalData.height), FlxColor.TRANSPARENT);
 		gameGroup.add(goal);
 
-		FlxG.worldBounds.set(entranceX, entranceY, gridWidth, FlxG.height);
+		FlxG.worldBounds.set(entrance.x, entrance.y, entrance.width, entrance.height + gridHeight + exit.height);
 		
 		player = new Player();
-		player.initFree(entranceX + levelData.playerStart.x, entranceY + levelData.playerStart.y, grid, entrance, exit, goal.getHitbox());
+		player.initFree(playerStart.x, playerStart.y, grid, entrance, exit, goal.getHitbox());
 		player.playerDropped.add(resetLevel);
 		player.playerDroppedStart.add(dropped);
 		player.playerReachedGoal.add(levelExit);		
 		gameGroup.add(player);
+		
+		playerStart.put();
+		goalData.put();
 	}
 	
-	function loadBackground(path:FlxTiledMapAsset):Void
+	function loadBackground(path:FlxTiledMapAsset, start:FlxPoint, goal:FlxRect):Void
 	{
 		var leMap:TiledMap = new TiledMap(path);
 		
 		for (layer in leMap.layers)
 		{
+			if (layer.type == TiledLayerType.OBJECT)
+			{
+				var objLayer:TiledObjectLayer = cast layer;
+				for (obj in objLayer.objects)
+				{
+					if (obj.name == "entrance")
+					{
+						entrance = new FlxSprite(obj.x, obj.y);
+						entrance.makeGraphic(obj.width, obj.height, FlxColor.fromString("#008d6e93"));
+						gameGroup.add(entrance);
+					}
+					else if (obj.name == "exit")
+					{
+						exit = new FlxSprite(obj.x, obj.y);
+						exit.makeGraphic(obj.width, obj.height, FlxColor.fromString("#008d6e93"));
+						gameGroup.add(exit);
+					}
+					else if (obj.name == "playerStart")
+					{
+						start.set(obj.x, obj.y);
+					}
+					else if (obj.name == "goal")
+					{
+						goal.set(obj.x, obj.y, obj.width, obj.height);
+					}
+				}
+			}
+			
 			if (layer.type != TiledLayerType.TILE) continue;
 			var tileLayer:TiledTileLayer = cast layer;
 			var tilesheetName:String = tileLayer.properties.get("tileset");
